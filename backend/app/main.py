@@ -8,7 +8,7 @@ from .database import Base, engine, SessionLocal
 from .models import User
 from .auth import hash_password
 from .config import STORAGE_DIR
-from .routers import auth, models, files
+from .routers import auth, models, files, traffic
 
 
 app = FastAPI(title="Model Repo")
@@ -34,6 +34,7 @@ except Exception:
 app.include_router(auth.router)
 app.include_router(models.router)
 app.include_router(files.router)
+app.include_router(traffic.router)
 
 app.add_middleware(
     CORSMiddleware,

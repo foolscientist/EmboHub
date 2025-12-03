@@ -1,6 +1,12 @@
 import os
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi.responses import FileResponse, RedirectResponse
+from fastapi.responses import FileResponse, RedirectResponse, StreamingResponse
+from datetime import datetime
+import time
+
+# active downloads state
+ACTIVE = {}
+CHUNK = 1024 * 256
 from sqlalchemy.orm import Session
 from ..database import get_db
 from ..models import File, Version, Model
@@ -41,7 +47,25 @@ def download_file(file_id: int, db: Session = Depends(get_db)):
     if m:
         m.download_count = (m.download_count or 0) + 1
         db.commit()
-    return FileResponse(fl.storage_uri, filename=fl.filename, media_type=fl.mime)
+    fid = f"{file_id}:{time.time()}"
+    total = os.path.getsize(fl.storage_uri)
+    ACTIVE[fid] = {"file_id": file_id, "filename": fl.filename, "bytes": 0, "total": total, "started_at": datetime.utcnow().isoformat()}
+
+    def iterfile(path):
+        try:
+            with open(path, "rb") as f:
+                while True:
+                    chunk = f.read(CHUNK)
+                    if not chunk:
+                        break
+                    st = ACTIVE.get(fid)
+                    if st:
+                        st["bytes"] = st.get("bytes", 0) + len(chunk)
+                    yield chunk
+        finally:
+            ACTIVE.pop(fid, None)
+
+    return StreamingResponse(iterfile(fl.storage_uri), media_type=fl.mime, headers={"Content-Disposition": f"attachment; filename={fl.filename}"})
 
 
 # 版本文件列表接口已移除，统一从 /models/{id}/files 获取
