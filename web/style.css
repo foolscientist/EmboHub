@@ -1,0 +1,26 @@
+:root { --bg:#fff; --fg:#111; --muted:#666; --border:#e5e7eb; --accent:#2563eb }
+* { box-sizing:border-box }
+body { margin:0; font-family:system-ui, -apple-system, Segoe UI, Roboto, Arial }
+.topbar { display:flex; align-items:center; gap:12px; padding:10px 16px; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--bg); z-index:1000; box-shadow:0 1px 0 rgba(0,0,0,0.04) }
+.user-status { margin-left:auto; display:flex; align-items:center; gap:8px }
+.brand { font-weight:600 }
+.btn { padding:6px 12px; border:1px solid var(--border); background:#f9fafb; cursor:pointer }
+.btn.primary { background:var(--accent); color:#fff; border-color:var(--accent) }
+.btn.active { background:var(--accent); color:#fff; border-color:var(--accent) }
+.btn:active { transform: scale(0.98); transition: transform 120ms }
+.container { max-width:960px; margin:18px auto; padding:0 16px; display:grid; gap:16px }
+.card { border:1px solid var(--border); padding:12px; border-radius:6px }
+.row { display:flex; gap:8px; align-items:center; flex-wrap:wrap }
+.grid { display:grid; gap:8px }
+.list-item { border:1px solid var(--border); padding:12px; border-radius:6px }
+.muted { color:var(--muted) }
+input, select { padding:8px; border:1px solid var(--border); border-radius:6px; min-width:200px }
+/* 让排序下拉在窄屏不溢出 */
+#sort { min-width:140px; width:140px }
+label { font-size:12px; color:var(--muted) }
+.fade-enter { opacity:0; transform: translateY(6px) }
+.fade-enter-active { opacity:1; transform: translateY(0); transition: all 240ms ease }
+.spinner { width:20px; height:20px; border-radius:50%; border:2px solid var(--border); border-top-color: var(--accent); animation: spin 800ms linear infinite }
+@keyframes spin { to { transform: rotate(360deg) } }
+.progress { width:100%; height:8px; background:#eef2f7; border-radius:999px; overflow:hidden }
+.progress-bar { height:100%; width:0%; background: var(--accent); transition: width 120ms linear }
