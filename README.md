@@ -171,5 +171,4 @@ curl -L -H "Authorization: Bearer $TOKEN" "http://127.0.0.1:8000/files/456/downl
 ```
 
 ## 备注与拓展
-- S3 直链下载的进度不在本机记录；如需监控，改为代理流式下载或对象存储事件采集
 - 下载并发由 Uvicorn/ASGI 框架与系统限制共同决定；当前监控 `capacity` 值为推荐目标（5）
