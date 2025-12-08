@@ -12,12 +12,14 @@ def traffic():
         t = v.get("total", 0) or 0
         b = v.get("bytes", 0) or 0
         pct = (b * 100 // t) if t else 0
-        items.append({
-            "file_id": v.get("file_id"),
-            "filename": v.get("filename"),
-            "bytes": b,
-            "total": t,
-            "percent": pct,
-            "started_at": v.get("started_at")
-        })
+        items.append(
+            {
+                "file_id": v.get("file_id"),
+                "filename": v.get("filename"),
+                "bytes": b,
+                "total": t,
+                "percent": pct,
+                "started_at": v.get("started_at"),
+            }
+        )
     return {"active": items, "capacity": 5, "active_count": len(items)}

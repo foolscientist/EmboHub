@@ -16,6 +16,7 @@ class UserOut(BaseModel):
     id: int
     username: str
     role: str
+
     class Config:
         from_attributes = True
 
@@ -35,6 +36,7 @@ class ModelOut(BaseModel):
     description: str
     tags: str
     download_count: int
+
     class Config:
         from_attributes = True
 
@@ -49,6 +51,7 @@ class VersionOut(BaseModel):
     version: str
     status: str
     is_latest: bool
+
     class Config:
         from_attributes = True
 
@@ -60,5 +63,6 @@ class FileOut(BaseModel):
     size: int
     sha256: str
     mime: str
+
     class Config:
         from_attributes = True

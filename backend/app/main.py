@@ -24,7 +24,11 @@ try:
     with SessionLocal() as db:
         exists_admin = db.query(User).filter(User.username == ADMIN_USERNAME).first()
         if not exists_admin:
-            admin = User(username=ADMIN_USERNAME, password_hash=hash_password(ADMIN_PASSWORD), role="admin")
+            admin = User(
+                username=ADMIN_USERNAME,
+                password_hash=hash_password(ADMIN_PASSWORD),
+                role="admin",
+            )
             db.add(admin)
             db.commit()
 except Exception:

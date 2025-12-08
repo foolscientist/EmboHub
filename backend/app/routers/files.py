@@ -34,22 +34,44 @@ def download_file(file_id: int, db: Session = Depends(get_db)):
         if not bucket or not key:
             raise HTTPException(status_code=404)
         from minio import Minio
-        client = Minio(S3_ENDPOINT, access_key=S3_ACCESS_KEY, secret_key=S3_SECRET_KEY, secure=S3_SECURE)
+
+        client = Minio(
+            S3_ENDPOINT,
+            access_key=S3_ACCESS_KEY,
+            secret_key=S3_SECRET_KEY,
+            secure=S3_SECURE,
+        )
         url = client.presigned_get_object(bucket, key, expires=3600)
-        m = db.query(Model).join(Version, Version.model_id == Model.id).filter(Version.id == fl.version_id).first()
+        m = (
+            db.query(Model)
+            .join(Version, Version.model_id == Model.id)
+            .filter(Version.id == fl.version_id)
+            .first()
+        )
         if m:
             m.download_count = (m.download_count or 0) + 1
             db.commit()
         return RedirectResponse(url)
     if not os.path.exists(fl.storage_uri):
         raise HTTPException(status_code=404)
-    m = db.query(Model).join(Version, Version.model_id == Model.id).filter(Version.id == fl.version_id).first()
+    m = (
+        db.query(Model)
+        .join(Version, Version.model_id == Model.id)
+        .filter(Version.id == fl.version_id)
+        .first()
+    )
     if m:
         m.download_count = (m.download_count or 0) + 1
         db.commit()
     fid = f"{file_id}:{time.time()}"
     total = os.path.getsize(fl.storage_uri)
-    ACTIVE[fid] = {"file_id": file_id, "filename": fl.filename, "bytes": 0, "total": total, "started_at": datetime.utcnow().isoformat()}
+    ACTIVE[fid] = {
+        "file_id": file_id,
+        "filename": fl.filename,
+        "bytes": 0,
+        "total": total,
+        "started_at": datetime.utcnow().isoformat(),
+    }
 
     def iterfile(path):
         try:
@@ -65,7 +87,11 @@ def download_file(file_id: int, db: Session = Depends(get_db)):
         finally:
             ACTIVE.pop(fid, None)
 
-    return StreamingResponse(iterfile(fl.storage_uri), media_type=fl.mime, headers={"Content-Disposition": f"attachment; filename={fl.filename}"})
+    return StreamingResponse(
+        iterfile(fl.storage_uri),
+        media_type=fl.mime,
+        headers={"Content-Disposition": f"attachment; filename={fl.filename}"},
+    )
 
 
 # 版本文件列表接口已移除，统一从 /models/{id}/files 获取
@@ -80,7 +106,13 @@ def delete_file_record(file_id: int, db: Session = Depends(get_db)):
         if rec.storage_uri and rec.storage_uri.startswith("s3://"):
             bucket, key = parse_s3_uri(rec.storage_uri)
             from minio import Minio
-            client = Minio(S3_ENDPOINT, access_key=S3_ACCESS_KEY, secret_key=S3_SECRET_KEY, secure=S3_SECURE)
+
+            client = Minio(
+                S3_ENDPOINT,
+                access_key=S3_ACCESS_KEY,
+                secret_key=S3_SECRET_KEY,
+                secure=S3_SECURE,
+            )
             client.remove_object(bucket, key)
         elif rec.storage_uri and os.path.exists(rec.storage_uri):
             try:

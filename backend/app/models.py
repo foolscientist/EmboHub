@@ -1,4 +1,14 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean, Text, BigInteger, UniqueConstraint
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    DateTime,
+    ForeignKey,
+    Boolean,
+    Text,
+    BigInteger,
+    UniqueConstraint,
+)
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from .database import Base
@@ -27,7 +37,9 @@ class Model(Base):
     download_count = Column(BigInteger, default=0, nullable=False)
 
     owner = relationship("User")
-    versions = relationship("Version", back_populates="model", cascade="all, delete-orphan")
+    versions = relationship(
+        "Version", back_populates="model", cascade="all, delete-orphan"
+    )
 
 
 class Version(Base):
@@ -42,9 +54,7 @@ class Version(Base):
     model = relationship("Model", back_populates="versions")
     files = relationship("File", back_populates="version", cascade="all, delete-orphan")
 
-    __table_args__ = (
-        UniqueConstraint("model_id", "version", name="uq_model_version"),
-    )
+    __table_args__ = (UniqueConstraint("model_id", "version", name="uq_model_version"),)
 
 
 class File(Base):
