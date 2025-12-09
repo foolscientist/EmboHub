@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from sqlalchemy import text
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
@@ -9,6 +9,7 @@ from .models import User
 from .auth import hash_password
 from .config import STORAGE_DIR
 from .routers import auth, models, files, traffic
+import logging
 
 
 app = FastAPI(title="Model Repo")

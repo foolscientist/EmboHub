@@ -28,6 +28,12 @@ function authHeader() {
   return t ? { Authorization: `Bearer ${t}` } : {};
 }
 
+class BackendError extends Error {
+  constructor(message = "自定义错误") {
+    super(message);
+    this.name = "BackendError";
+  }
+}
 /**
  * @name j
  * @param {string} method - The HTTP method to use in the request, e.g. GET, POST, PUT etc.
@@ -48,7 +54,9 @@ async function j(method, path, body) {
   let data = null;
   try {
     data = await res.json();
-  } catch (_) {}
+  } catch (e) {
+    throw new Error("parse json error" + e.message);
+  }
   if (res.status === 401) {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -218,8 +226,12 @@ function viewLogin() {
     p = document.getElementById("password"),
     err = document.getElementById("err");
   function validate() {
-    if (!u.value || !p.value || p.value.length < 6) {
-      err.textContent = "账号或密码错误";
+    if (!u.value || !p.value) {
+      err.textContent = "账号或密码为空";
+      return false;
+    }
+    if (p.value.length < 6) {
+      err.textContent = "密码太短, 最少6字符";
       return false;
     }
     err.textContent = "";
@@ -234,7 +246,7 @@ function viewLogin() {
       localStorage.setItem("user", JSON.stringify(me));
       location.hash = me.role === "admin" ? "#admin" : "#models";
     } catch (e) {
-      err.textContent = "账号或密码错误";
+      err.textContent = `账号或密码错误\n${e.name}: ${e.message}`;
     }
   };
   document.getElementById("regBtn").onclick = async () => {
@@ -247,7 +259,7 @@ function viewLogin() {
       localStorage.setItem("user", JSON.stringify(me));
       location.hash = me.role === "admin" ? "#admin" : "#models";
     } catch (e) {
-      err.textContent = "账号或密码错误";
+      err.textContent = `账号或密码错误\n${e.name}: ${e.message}`;
     }
   };
 }

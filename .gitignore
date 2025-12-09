@@ -1,2 +1,4 @@
 /backend/venv
 /backend/app/**/__pycache__
+/storage
+app.db
