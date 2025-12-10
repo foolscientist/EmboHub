@@ -28,6 +28,34 @@ class ModelCreate(BaseModel):
     tags: Optional[str] = ""
 
 
+# class ModelInfoTag(BaseModel):
+#     capabilities: str
+#     action: Optional[str] = None
+#     target_object: Optional[str] = None
+#     language: Optional[str] = None
+#     host_device: Optional[str] = None
+#     scenario: Optional[str] = None
+
+
+class ModelInfoMetric(BaseModel):
+    parameters: Optional[int] = None
+    quantatization: Optional[str] = None
+    gpu_memory_gb: Optional[float] = None
+    storage_gb: Optional[float] = None
+
+
+class ModelInfo(BaseModel):
+    id: Optional[int] = None
+    name: str
+    fullname: str
+    architecture: str
+    framework: str
+    version: str
+    description: str = ""
+    tags: dict
+    metrics: ModelInfoMetric
+
+
 class ModelOut(BaseModel):
     id: int
     name: str

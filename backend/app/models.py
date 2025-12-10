@@ -6,6 +6,7 @@ from sqlalchemy import (
     ForeignKey,
     Boolean,
     Text,
+    Float,
     BigInteger,
     UniqueConstraint,
 )
@@ -40,6 +41,43 @@ class Model(Base):
     versions = relationship(
         "Version", back_populates="model", cascade="all, delete-orphan"
     )
+
+
+class ModelBasic(Base):
+    __tablename__ = "ModelBasic"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(255), nullable=False)
+    fullname = Column(String(255), nullable=False, unique=True)
+    owner_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    description = Column(Text, default="")
+    architecture = Column(Text, default="")
+    framework = Column(Text, default="")
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    download_count = Column(BigInteger, default=0)
+    owner = relationship("User")
+    # versions = relationship(
+    #    "Version", back_populates="model", cascade="all, delete-orphan"
+    # )
+
+
+class ModelTags(Base):
+    __tablename__ = "ModelTags"
+
+    id = Column(Integer, ForeignKey("ModelBasic.id"), primary_key=True)
+    key = Column(Text, nullable=False, primary_key=True)
+    val = Column(Text, nullable=False)
+
+
+class ModelMetrics(Base):
+    __tablename__ = "ModelMetrics"
+
+    id = Column(Integer, ForeignKey("ModelBasic.id"), primary_key=True)
+    parameters = Column(Integer)
+    quantatization = Column(Text)
+    gpu_memory_gb = Column(Float)
+    storage_gb = Column(Float)
 
 
 class Version(Base):

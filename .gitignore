@@ -2,3 +2,5 @@
 /backend/app/**/__pycache__
 /storage
 app.db
+/web/out
+/unused
