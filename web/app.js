@@ -45,7 +45,7 @@ class BackendError extends Error {
  * @throws Will throw an error if the fetch call fails (network errors etc), or if the server responds with an HTTP status code indicating an error occurred on the server side (4xx, 5xx). If a JSON response is expected but cannot be parsed from the server's response text, this will also throw an error.
  *
  */
-async function j(method, path, body) {
+async function authFetch(method, path, body) {
   const res = await fetch(API + path, {
     method,
     headers: { "Content-Type": "application/json", ...authHeader() },
@@ -67,7 +67,7 @@ async function j(method, path, body) {
   return data;
 }
 
-async function f(path, fd) {
+async function authPost(path, fd) {
   const res = await fetch(API + path, {
     method: "POST",
     headers: { ...authHeader() },
@@ -78,8 +78,10 @@ async function f(path, fd) {
 }
 
 const api = {
-  register: (u, p) => j("POST", "/auth/register", { username: u, password: p }),
-  login: (u, p) => j("POST", "/auth/login", { username: u, password: p }),
+  register: (u, p) =>
+    authFetch("POST", "/auth/register", { username: u, password: p }),
+  login: (u, p) =>
+    authFetch("POST", "/auth/login", { username: u, password: p }),
   me: () =>
     fetch(API + "/auth/me", { headers: authHeader() }).then((r) => r.json()),
   listModels: (q, tags, sort) => {
@@ -90,14 +92,14 @@ const api = {
     const url = "/models" + (qs.length ? `?${qs.join("&")}` : "");
     return fetch(API + url).then((r) => r.json());
   },
-  createModel: (p) => j("POST", "/models", p),
+  createModel: (p) => authFetch("POST", "/models", p),
   getModel: (id) => fetch(API + `/models/${id}`).then((r) => r.json()),
   listModelFiles: (id) =>
     fetch(API + `/models/${id}/files`).then((r) => r.json()),
   uploadModelFile: (id, file) => {
     const fd = new FormData();
     fd.append("f", file);
-    return f(`/models/${id}/upload`, fd);
+    return authPost(`/models/${id}/upload`, fd);
   },
   downloadUrl: (fid) => API + `/files/${fid}/download`,
   health: () => fetch(API + "/system/health").then((r) => r.json()),
@@ -176,6 +178,7 @@ function renderNav() {
     if (el) el.classList.add("active");
   }
 }
+
 function renderUserStatus() {
   const box = document.getElementById("userStatus");
   if (!box) return;
@@ -561,7 +564,7 @@ async function viewAdmin() {
       const id = Number(btn.getAttribute("data-del"));
       if (!id) return;
       try {
-        await j("DELETE", `/models/${id}`);
+        await authFetch("DELETE", `/models/${id}`);
         viewAdmin();
       } catch (e) {
         alert("删除失败");
