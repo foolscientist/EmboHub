@@ -1,6 +1,6 @@
 // 已收敛到单模型单文件，移除旧版本相关操作
 
-import { api, mount } from "../api";
+import { api, mount } from "../api.js";
 
 function toMBSize(sizeBytes: number) {
   return Math.round((sizeBytes / 1024 / 1024) * 10) / 10;

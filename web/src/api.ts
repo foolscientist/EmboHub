@@ -1,4 +1,4 @@
-import * as schema from "./schemas";
+import * as schema from "./schemas.js";
 const API = "";
 
 export function authHeader() {

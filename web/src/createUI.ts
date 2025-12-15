@@ -1,13 +1,13 @@
-import { api, authHeader, mount } from "./api";
-import viewBrowse from "./render/viewBrowse";
-import viewLogin from "./render/viewLogin";
-import viewCreate from "./render/viewCreate";
-import viewMe from "./render/viewMe";
-import viewModel from "./render/viewModel";
-import viewStats from "./render/viewStats";
-import renderNav from "./render/renderNav";
-import viewAdmin from "./render/viewAdmin";
-import { clearPendingFiles, pendingFiles } from "./globalState";
+import { api, authHeader, mount } from "./api.js";
+import viewBrowse from "./render/viewBrowse.js";
+import viewLogin from "./render/viewLogin.js";
+import viewCreate from "./render/viewCreate.js";
+import viewMe from "./render/viewMe.js";
+import viewModel from "./render/viewModel.js";
+import viewStats from "./render/viewStats.js";
+import renderNav from "./render/renderNav.js";
+import viewAdmin from "./render/viewAdmin.js";
+import { clearPendingFiles, pendingFiles } from "./globalState.js";
 
 export function enhanceCreateUI() {
   if (location.hash !== "#new") return;

@@ -1,4 +1,4 @@
-import { api, authFetch, mount } from "../api";
+import { api, authFetch, mount } from "../api.js";
 
 export default async function viewAdmin() {
   const me = localStorage.getItem("user")

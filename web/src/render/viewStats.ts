@@ -1,4 +1,4 @@
-import { api, mount } from "../api";
+import { api, mount } from "../api.js";
 
 export default async function viewStats() {
   const all = await api.listModels();

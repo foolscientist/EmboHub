@@ -9,10 +9,11 @@ ACTIVE = {}
 CHUNK = 1024 * 256
 from sqlalchemy.orm import Session
 from ..database import get_db
-from ..models import File, Version, Model
+from ..models import File, Version, ModelBasic
 from ..config import S3_ENDPOINT, S3_BUCKET, S3_ACCESS_KEY, S3_SECRET_KEY, S3_SECURE
 from ..storage import parse_s3_uri
 
+Model = ModelBasic
 
 router = APIRouter(prefix="/files", tags=["files"])
 

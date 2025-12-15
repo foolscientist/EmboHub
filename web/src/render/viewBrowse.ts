@@ -1,5 +1,5 @@
-import { api, mount } from "../api";
-import * as schemas from "../schemas";
+import { api, mount } from "../api.js";
+import * as schemas from "../schemas.js";
 function makeBrowseModelItem(m: schemas.LegacyModelOut) {
   return `<div class='list-item'>
             <div class='row' style='justify-content:space-between'>

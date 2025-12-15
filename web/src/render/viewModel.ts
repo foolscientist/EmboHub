@@ -1,4 +1,4 @@
-import { api, mount, type ModelId } from "../api";
+import { api, mount, type ModelId } from "../api.js";
 
 export default async function viewModel(id: ModelId) {
   const m = await api.getModel(id);

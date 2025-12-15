@@ -1,4 +1,4 @@
-import { api, mount } from "../api";
+import { api, mount } from "../api.js";
 
 function validate(u, p, err) {
   if (!u.value || !p.value) {

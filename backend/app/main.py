@@ -52,6 +52,13 @@ app.add_middleware(
 # Static web UI (HTML/CSS/JS)
 WEB_DIR = str((Path(__file__).resolve().parents[2] / "web").resolve())
 app.mount("/ui", StaticFiles(directory=WEB_DIR, html=True), name="ui")
+app.mount(
+    "/test",
+    StaticFiles(
+        directory=(Path(__file__).resolve().parents[2] / "react-basic/dist"), html=True
+    ),
+    name="test",
+)
 
 
 @app.get("/system/health")

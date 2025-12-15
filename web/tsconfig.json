@@ -1,6 +1,10 @@
+// 坑 https://typescript.net.cn/docs/handbook/modules/theory.html#module-specifiers-are-not-transformed
+
 {
     "compilerOptions": {
+        "target":"es6",
         "module": "es6",
+        //"moduleResolution": "esnext",
         "lib" :["es2017","dom"],
         // "noImplicitAny": true,
         "removeComments": true,

@@ -1,5 +1,5 @@
-import { api, authHeader, mount } from "../api";
-import { clearPendingFiles, pendingFiles } from "../globalState";
+import { api, authHeader, mount } from "../api.js";
+import { clearPendingFiles, pendingFiles } from "../globalState.js";
 
 function makeUploadCard(uploadDisabled: any) {
   return `<div class="row">
