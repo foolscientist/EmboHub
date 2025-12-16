@@ -1,0 +1,18 @@
+.list-item {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin-bottom: 30px;
+  border-radius: 5px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.muted {
+  color: #6c757d;
+  font-size: 0.9em;
+  margin-top: 10px;
+}

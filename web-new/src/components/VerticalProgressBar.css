@@ -1,0 +1,17 @@
+/* VerticalProgressBar.css */
+vertical-progress-bar {
+  width: 20px;
+  height: 200px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+progress {
+  width: 100%;
+  background-color: #76c7c0;
+  transition: height 0.3s ease;
+  position: absolute;
+  bottom: 0;
+}

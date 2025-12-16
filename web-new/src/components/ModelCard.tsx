@@ -1,6 +1,7 @@
 import React from "react";
 import { type ModelInfo } from "@/types/model";
 import { Link, useNavigate } from "react-router-dom";
+import "./ModelCard.css";
 
 type ModelCardProps = {
   model: ModelInfo;
@@ -23,12 +24,12 @@ const ModelCard: React.FC<ModelCardProps> = ({ model }) => {
   return (
     <div className="list-item">
       <div className="row" style={{ justifyContent: "space-between" }}>
-        <strong>
-          {model.name} - {model.version}
+        <strong style={{ flexDirection: "row-reverse" }}>
+          {model.version == "single"
+            ? model.name
+            : `${model.name} - ${model.version}`}
         </strong>
-      </div>
-      <div className="muted">标签：{makeTags(model.tags)}</div>
-      <div className="row">
+        <div className="muted">标签：{makeTags(model.tags)}</div>
         <Link to={`/model/${model.id}`}>详情</Link>
       </div>
     </div>

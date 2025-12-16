@@ -1,6 +1,10 @@
 const API = "";
 
-import { type LegacyModelOut, type ModelInfo } from "@/types/model";
+import {
+  type CompleteModelInfo,
+  type LegacyModelOut,
+  type ModelInfo,
+} from "@/types/model";
 
 type ModelId = number | string;
 
@@ -109,11 +113,48 @@ export interface ModelFileEntry {
 }
 
 export async function listModelFiles(id: ModelId) {
-  const res = await fetch(API + `/models/${id}`);
+  const res = await fetch(API + `/models/${id}/files`);
   const j = await res.json();
   return j as ModelFileEntry[];
 }
 
 export function downloadUrl(fid: number | string) {
   return API + `/files/${fid}/download`;
+}
+
+export async function createModel(p: any) {
+  const j = await authFetch("POST", "/models", p);
+  return j as CompleteModelInfo;
+}
+
+type ProgressCallback = (x: number) => any;
+
+export async function uploadFile(
+  modelId: number | string,
+  file: File,
+  setProgress: ProgressCallback | undefined = undefined,
+) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", `/models/${modelId}/upload`);
+    const h = authHeader();
+    Object.entries(h).forEach(([k, vv]) => xhr.setRequestHeader(k, vv));
+    xhr.upload.onprogress = (e) => {
+      if (!setProgress) {
+        return;
+      }
+      if (e.lengthComputable) {
+        const pct = Math.round((e.loaded / e.total) * 100);
+        setProgress(pct);
+      }
+    };
+    xhr.onload = () =>
+      xhr.status >= 200 && xhr.status < 300
+        ? resolve(xhr.responseText)
+        : reject(new Error(xhr.status.toString()));
+    xhr.onerror = () => reject(new Error("network"));
+    const fd = new FormData();
+    fd.append("f", file);
+    xhr.send(fd);
+  });
 }

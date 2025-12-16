@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import * as api from "./api"; // 假设你的 login 函数在 auth.js 文件中
+import * as api from "@/api"; // 假设你的 login 函数在 auth.js 文件中
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -27,7 +27,7 @@ const Login = () => {
         // 存储 token 到 cookie
         localStorage.setItem("token", result.access_token);
         // 跳转到 /home
-        navigate("/home");
+        navigate("/browse");
       }
     } catch (err) {
       setError("登录失败，请检查用户名和密码"); // 显示错误信息

@@ -26,3 +26,7 @@ export interface ModelInfo {
   tags: Record<string, any>;
   metrics: ModelInfoMetric;
 }
+
+export type CompleteModelInfo = ModelInfo & {
+  id: number;
+};

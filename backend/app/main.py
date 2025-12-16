@@ -55,7 +55,7 @@ app.mount("/ui", StaticFiles(directory=WEB_DIR, html=True), name="ui")
 app.mount(
     "/test",
     StaticFiles(
-        directory=(Path(__file__).resolve().parents[2] / "react-basic/dist"), html=True
+        directory=(Path(__file__).resolve().parents[2] / "web-new/dist"), html=True
     ),
     name="test",
 )

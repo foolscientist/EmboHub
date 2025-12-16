@@ -1,30 +1,29 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, HashRouter } from "react-router-dom";
 import "./index.css";
-import App from "./App.tsx";
-import App2 from "./App2.tsx";
 import SearchPage from "./SearchPage.tsx";
-import Login from "./Login.tsx";
-import BrowseModels from "./BrowseModels.tsx";
-import ModelDetail from "./ModelDetail.tsx";
+import Login from "@/pages/Login.tsx";
+import BrowseModels from "@/pages/BrowseModels.tsx";
+import ModelDetail from "@/pages/ModelDetail.tsx";
+import CreateModel from "@/pages/CreateModel.tsx";
+import "@/components/NavBar.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter basename="/test">
-      <nav>
-        <Link to="/home">首页</Link>
-        <Link to="/search?q=react">搜索react</Link>
+    <HashRouter>
+      <nav className="navbar">
+        <Link to="/browse">模型</Link>
+        <Link to="/create">创建模型</Link>
       </nav>
 
       <Routes>
-        <Route path="/" element={<App />} />
+        <Route path="/" element={<Login />} />
         <Route path="/browse" element={<BrowseModels />} />
-        <Route path="app2" element={<App2 />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/create" element={<CreateModel />} />
         <Route path="/model/:modelId" element={<ModelDetail />} />
       </Routes>
-      <Login />
-    </BrowserRouter>
+    </HashRouter>
   </StrictMode>,
 );
