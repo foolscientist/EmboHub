@@ -113,7 +113,7 @@ class Event(Base):
     __tablename__ = "events"
     id = Column(Integer, primary_key=True, index=True)
     type = Column(String(16), nullable=False)
-    model_id = Column(Integer, ForeignKey("models.id"), nullable=True)
+    model_id = Column(Integer, ForeignKey("ModelBasic.id"), nullable=True)
     version_id = Column(Integer, ForeignKey("versions.id"), nullable=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     timestamp = Column(DateTime, default=datetime.utcnow, nullable=False)
