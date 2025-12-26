@@ -7,6 +7,11 @@
   - 存储：本地文件
   - 前端：原生 HTML/CSS/JS 单页式界面
 
+相关文档
+
+- [AI模型库设计文档](https://insightos.feishu.cn/wiki/Pt4bwxzx4iVAMTkWoFIcl7KCnUh)
+- [模型仓库使用+部署指南](https://insightos.feishu.cn/wiki/MsOaw3inliC0Cyk35W6cB2QTnK7)
+
 ## 目录结构
 ```
 EmboHub/
